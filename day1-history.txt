@@ -223,11 +223,3 @@ kubectl create role -n app1 devops-role --verb=get --verb=list --verb=watch --re
 kubectl edit role -n app1 devops-role 
 git status
 cd ..
-git status
-git add .
-git commit -m "adding day1 files"
-git add .
-git commit -m "adding day1 files"
-git push
-history
-history | awk '$1 > 4' | cut -c 8- > day1-history.txt
