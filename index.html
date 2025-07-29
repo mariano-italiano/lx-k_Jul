@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MiniTwitter</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* Reset i podstawowy styl */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f0f2f5;
+      color: #333;
+    }
+
+    header {
+      background-color: #1DA1F2;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header h1 {
+      font-size: 24px;
+    }
+
+    nav a {
+      color: white;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .post-box {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .post-box textarea {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: none;
+    }
+
+    .post-box button {
+      align-self: flex-end;
+      padding: 10px 20px;
+      background-color: #1DA1F2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .post {
+      margin-top: 30px;
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .post .user {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .post .content {
+      font-size: 15px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      color: #999;
+      font-size: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px;
+      }
+
+      header h1 {
+        font-size: 20px;
+      }
+
+      nav a {
+        margin-left: 10px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1><i class="fa-brands fa-twitter"></i> MiniTwitter</h1>
+    <nav>
+      <a href="#">Start</a>
+      <a href="#">Zaloguj</a>
+      <a href="#">Zarejestruj</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="post-box">
+      <textarea placeholder="Co się dzieje?"></textarea>
+      <button>Tweetnij</button>
+    </div>
+
+    <div class="post">
+      <div class="user">@janek</div>
+      <div class="content">To jest mój pierwszy tweet na MiniTwitterze! 🚀</div>
+    </div>
+
+    <div class="post">
+      <div class="user">@ania</div>
+      <div class="content">Hej wszystkim! Cieszę się, że tu jestem 😊</div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 MiniTwitter – projekt demo
+  </footer>
+
+</body>
+</html>
+
