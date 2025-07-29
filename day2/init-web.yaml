@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-web
+spec:
+  containers:
+  - image: nginx:1.19.2
+    name: c1
+  initContainers:
+  - name: svc-check
+    image: 'radial/busyboxplus:curl'
+    command: ['sh','-c','until nslookup redis-svc; do echo waiting for redis-svc to start; sleep 2 ; done']
+  - name: delay1
+    image: busybox
+    command: ['sh','-c','sleep 30']
+  - name: delay2
+    image: busybox
+    command: ['sh','-c','sleep 15']
