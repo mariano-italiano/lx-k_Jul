@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: my-configmap
+data:
+  klucz1: value1
+  klucz2: wartosc2
+  appVer: "1.2.1"
+  config.json: |
+    {"attr": "val1",
+    "attr2": "val2"}
+

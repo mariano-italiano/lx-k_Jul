@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: configmap-pod
+spec:
+  containers:
+  - name: task-pv-container
+    image: nginx
+    env:
+      - name: APPLICATION_VER
+        valueFrom:
+          configMapKeyRef:
+            name: my-configmap
+            key: appVer
+    envFrom:
+      - configMapRef:
+          name: from-env-file  
+

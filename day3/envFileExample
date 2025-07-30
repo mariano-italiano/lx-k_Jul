@@ -1,0 +1,4 @@
+MY_VAR1=APPLICATION_A
+# application version
+APP_VER=1.0.1
+REPLICAS=4

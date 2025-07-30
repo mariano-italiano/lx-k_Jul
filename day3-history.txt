@@ -1,0 +1,220 @@
+kubectl api-resources | grep -i job
+cd lx-k_Jul/
+mkdir day3
+cd day3
+vi pi-job.yaml
+kubectl apply -f pi-job.yaml
+watch -n1 kubectl get job,pod
+kubectl logs pi-job-29tkz 
+vi sleep-job.yaml
+kubectl apply -f sleep-job.yaml
+watch -n1 kubectl get job,pod
+vi parallel-job.yaml
+kubectl apply -f parallel-job.yaml
+watch -n1 kubectl get job,pod
+vi cronjob.yaml
+mv cronjob.yaml hello-cronjob.yaml
+vi hello-cronjob.yaml
+kubectl apply -f hello-cronjob.yaml
+watch -n 1 kubectl get cj,job,pod
+kubectl logs hello-cronjob-29231013-jrgts 
+watch -n 1 kubectl get cj,job,pod
+kubectl delete -f hello-cronjob.yaml 
+watch -n 1 kubectl get cj,job,pod
+vi nginx-stfs.yaml
+kubectl apply -f nginx-stfs.yaml
+kubectl get sts,pod,svc
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml
+watch -n1 kubectl get all -n ingress-nginx
+kubectl get ingressclasses.networking.k8s.io 
+kubectl create deploy --image nginx --replicas 1 
+kubectl create deploy books  --image nginx --replicas 1 
+kubectl create deploy cars  --image nginx --replicas 1 
+cars-index.html
+<html lang="pl">
+<head>
+vi cars-index.html
+vi books-index.html
+kubectl get pods
+kubectl cp books-index.html books-7c7bd6c74f-r9kdg:/usr/share/nginx/html/index.html 
+kubectl cp cars-index.html cars-6664876f54-lh49b:/usr/share/nginx/html/index.html
+kubectl expose deployment books --name books-svc --port 80 
+kubectl expose deployment cars --name cars-svc --port 80 
+kubectl get svc
+kubectl get svc,ep,pod
+vi app-ingress.yaml
+kubectl get svc -n ingress-nginx 
+kubectl edit svc -n ingress-nginx  ingress-nginx-controller
+kubectl get svc -n ingress-nginx 
+vi app-ingress.yaml
+kubectl apply -f app-ingress.yaml
+kubectl get ingress
+kubectl describe ingress app-ingress 
+kubectl edit ingress app-ingress 
+kubectl describe ingress app-ingress 
+vi app-ingress.yaml
+vi volume-pod.yaml
+kubectl apply -f volume-pod.yaml
+kubectl get pods -o wide
+kubectl exec -it volume-pod -- bash
+vi volume-pod.yaml 
+kubectl replace --force -f volume-pod.yaml
+kubectl exec -it volume-pod -- bash
+cp -rp volume-pod.yaml nfs-pod.yaml
+vi nfs-pod.yaml 
+kubectl apply -f nfs-pod.yaml
+kubectl get pods
+kubectl get pods -o wide
+kubectl exec -it nfs-pod -- bash
+vi test-pv.yaml
+kubectl get sc 
+vi test-pv.yaml
+kubectl apply -f test-pv.yaml
+kubectl get pv 
+vi test-pvc.yaml
+kubectl apply -f test-pvc.yaml
+kubectl get pv,pvc
+vi test-pvc.yaml 
+kubectl delete pvc test-pvc 
+kubectl apply -f test-pvc.yaml
+kubectl get pv,pvc
+vi pv-volume-pod.yaml
+kubectl apply -f pv-volume-pod.yaml
+kubectl get pod
+kubectl exec -it pv-volume-pod -- bash
+kubectl expose pod pv-volume-pod --name pv-vol-pod-svc --type NodePort --port 80 
+kubectl edit pod pv-volume-pod 
+kubectl expose pod pv-volume-pod --name pv-vol-pod-svc --type NodePort --port 80 
+kubectl get svc
+kubectl delete -f pv-volume-pod.yaml 
+kubectl get pv,pvc
+kubectl delete pvc test-pvc 
+kubectl get pv,pvc
+kubectl apply -f test-pvc.yaml 
+kubectl get pv,pvc
+kubectl get pv test-pv -o json
+kubectl patch pv test-pv -p '{"spec":{"claimRef": null}}'
+kubectl get pv test-pv -o json
+kubectl get pv,pvc
+kubectl apply -f pv-volume-pod.yaml
+kubectl get pv,pvc
+kubectl delete pvc test-pvc 
+kubectl get pv,pvc
+kubectl edit pvc test-pvc 
+kubectl get pv,pvc
+kubectl delete pod pv-volume-pod 
+kubectl get sc
+kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.31/deploy/local-path-storage.yaml
+kubectl get all -n local-path-storage
+kubectl get sc
+cp test-pvc.yaml dynamic-pvc.yaml
+vi dynamic-pvc.yaml
+kubectl apply -f dynamic-pvc.yaml
+kubectl get pv,pvc
+cp -rp pv-volume-pod.yaml dynamic-pv-pod.yaml
+vi dynamic-pv-pod.yaml
+kubectl apply -f dynamic-pv-pod.yaml ; watch -n1 kubectl get pv,pvc
+kubectl delete -f dynamic-pv-pod.yaml 
+kubectl delete pvc dynamic-pvc 
+watch -n1 kubectl get pv,pvc
+vi my-configmap.yaml
+kubectl apply -f my-configmap.yaml
+kubectl get cm 
+kubectl describe cm my-configmap 
+cp -rp /etc/ssh/sshd_config .
+vi sshd_config 
+rm sshd_config
+cat /etc/ssh/sshd_config | grep -v "#" > sshd_config
+vi sshd_config 
+kubectl create cm ssh-conf --from-file sshd_config 
+kubectl describe cm ssh-conf 
+vi envFileExample
+kubectl create cm from-env-file --from-env-file envFileExample 
+kubectl describe cm from-env-file 
+kubectl create cm last-cm --from-literal username=root --from-literal app_name=costam 
+kubectl describe cm last-cm 
+kubectl create cm last-really-last --from-literal test1=value1 --from-file sshd_config 
+kubectl describe cm last-really-last 
+vi configmap-pod.yaml
+cp pv-volume-pod.yaml configmap-pod.yaml
+vi configmap-pod.yaml
+kubectl apply -f configmap-pod.yaml
+kubectl get pods
+kubectl exec -it configmap-pod -- env
+cp -rp pv-volume-pod.yaml configmap-volume-pod.yaml
+vi configmap-volume-pod.yaml
+kubectl apply -f configmap-volume-pod.yaml
+kubectl exec -i configmap-volume-pod -- bash
+kubectl exec -i tconfigmap-volume-pod -- bash
+kubectl exec -it configmap-volume-pod -- bash
+vi my-configmap.yaml 
+kubectl edit cm last-really-last 
+kubectl describe cm last-really-last
+kubectl exec -it configmap-volume-pod -- bash
+kubectl create secret generic db-pass --from-literal username=root --from-literal password=securePass123
+kubectl get secret
+kubectl describe secret db-pass 
+kubectl get secret -o yaml
+echo 'c2VjdXJlUGFzczEyMw==' | base64 -d && echo 
+kubectl get cm,secret
+htpasswd -c .htpasswd mariola
+sudo apt install apache2-utils -y
+htpasswd -c .htpasswd mariola
+cat .htpasswd 
+kubectl create secret generic nginx-htpasswd --from-file .htpasswd 
+kubectl get secrets nginx-htpasswd -o yaml
+rm .htpasswd
+vi nginx-config.yaml
+kubectl apply -f nginx-config.yaml
+kubectl create deployment nginx-secure --image nginx --dry-run=client -o yaml > nginx-secure.yaml
+vi nginx-secure.yaml
+kubectl apply -f nginx-secure.yaml
+kubectl get pods
+kubectl expose deployment nginx-secure --port 80 --name nginx-secure-svc --type NodePort
+kubectl get svc
+kubectl top
+kubectl top nodes
+kubectl top podes
+kubectl top pods
+wget https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml 
+vi components.yaml
+kubectl apply -f components.yaml
+watch -n1 kubectl get all -n kube-system 
+kubectl top nodes
+kubectl get ds
+kubectl top pods
+kubectl describe ds my-daemonset 
+kubectl top pods -l name=myds
+kubectl top pods -l name=myds --no-headers 
+kubectl top pods -l name=myds --no-headers | awk '{cpu+=$2; mem+=$3} END {print "CPU:", cpu "m", "MEM:", mem "Mi"}'
+kubectl top pods -l name=myds --no-headers | awk '{cpu+=$2; } END {print "CPU:", cpu "m"}' ; kubectl top pods -l name=myds --no-headers | awk '{mem+=$3} END {print "MEM:", mem "Mi"}'
+echo "My daemonset consumption details"; kubectl top pods -l name=myds --no-headers | awk '{cpu+=$2; } END {print "CPU:", cpu "m"}' ; kubectl top pods -l name=myds --no-headers | awk '{mem+=$3} END {print "MEM:", mem "Mi"}'
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+watch -n1 kubectl get all -n kubernetes-dashboard
+vi dashboard-ingress.yaml
+kubectl apply -f dashboard-ingress.yaml
+kubectl describe ingress -n kubernetes-dashboard dashboard-ingress 
+kubectl create sa -n kubernetes-dashboard dashboard-admin 
+kubectl get sa -n kubernetes-dashboard 
+kubectl get clusterrole
+kubectl create clusterrolebinding dashboard-binding --help
+kubectl create clusterrolebinding dashboard-binding --clusterrole=cluster-admin --serviceaccount=kubernetes-dashboard:dashboard-admin 
+kubectl describe clusterrolebinding dashboard-binding
+kubectl -n kubernetes-dashboard create token dashboard-admin 
+kubectl exec -it dashboard-deployment-68874b5cfd-krbwk -- sh
+kubectl get depoy,pod
+kubectl get deploy,pod
+vi final-app.yaml
+kubectl apply -f final-app.yaml
+watch -n1 kubectl get all -n app
+kubectl get pv,pvc
+kubectl get pv,pvc -n app
+kubectl describe ingress -n app flask-ingress 
+kubectl rollout restart deployment -n app postgres 
+kubectl get pod -n app
+kubectl -n app rollout restart deployment flask 
+kubectl get pod -n app
+cd ..
+git status
+history
+history | awk '$1 >  528' | cut -c 8- > day3-history.txt

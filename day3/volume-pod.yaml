@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-pod
+spec:
+  nodeName: worker02
+  containers:
+  - name: test
+    image: nginx
+    volumeMounts:
+    - name: data-vol
+      mountPath: /appdir 
+  volumes:
+  - name: data-vol
+    hostPath:
+      path: /files 
+
